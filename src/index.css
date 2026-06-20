@@ -1,0 +1,165 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.header {
+  padding: 16px 32px;
+  background: #198754;
+}
+
+.logo {
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.container {
+  width: 900px;
+  max-width: calc(100% - 32px);
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.articles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.article-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.article-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.author {
+  margin: 0;
+  color: #198754;
+  font-weight: bold;
+}
+
+.date {
+  margin: 4px 0 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.article-title {
+  display: block;
+  margin-top: 16px;
+  color: #222;
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.article-title:hover {
+  color: #198754;
+}
+
+.description {
+  color: #555;
+}
+
+.like-button {
+  padding: 6px 12px;
+  color: #198754;
+  background: white;
+  border: 1px solid #198754;
+  border-radius: 4px;
+  cursor: not-allowed;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 8px;
+  border: 1px solid #aaa;
+  border-radius: 12px;
+  color: #666;
+  font-size: 13px;
+}
+
+.pagination {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination .active-page {
+  background: #198754;
+  color: white;
+  border-color: #198754;
+}
+
+.error {
+  padding: 16px;
+  background: #ffe0e0;
+  color: #b00020;
+  border-radius: 6px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #198754;
+  text-decoration: none;
+}
+
+.full-article {
+  background: white;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.markdown {
+  margin-top: 24px;
+  line-height: 1.6;
+}
+
+.markdown img {
+  max-width: 100%;
+}
+
+.markdown pre {
+  background: #222;
+  color: white;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: 6px;
+}
+
+.markdown code {
+  background: #eee;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
