@@ -1,4 +1,4 @@
-const API_URL = 'https://realworld.habsidev.com/api';
+const API_URL = 'https://realworld.habsida.net/api';
 
 export async function getArticles(page, limit) {
   const offset = (page - 1) * limit;
