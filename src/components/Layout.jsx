@@ -20,6 +20,10 @@ export default function Layout() {
         <nav className="header-nav">
           {user ? (
             <>
+              <Link to="/new-article" className="nav-link register-link">
+                New Article
+              </Link>
+
               <Link to="/profile" className="user-link">
                 {user.image && (
                   <img src={user.image} alt={user.username} className="avatar" />

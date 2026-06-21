@@ -271,6 +271,8 @@ body {
   cursor: not-allowed;
 }
 
+
+
 @media (max-width: 600px) {
   .header {
     padding: 14px 16px;
@@ -294,5 +296,92 @@ body {
 
   .article-title {
     font-size: 20px;
+  }
+}
+
+.auth-form textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  resize: vertical;
+}
+
+.article-form-container {
+  width: 700px;
+}
+
+.article-page-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.article-actions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.edit-button,
+.delete-button,
+.cancel-button {
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.edit-button {
+  color: #198754;
+  background: white;
+  border: 1px solid #198754;
+}
+
+.delete-button {
+  color: #b00020;
+  background: white;
+  border: 1px solid #b00020;
+}
+
+.cancel-button {
+  color: #333;
+  background: white;
+  border: 1px solid #bbb;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-modal {
+  width: 320px;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+  .article-page-header {
+    flex-direction: column;
+  }
+
+  .article-actions {
+    flex-wrap: wrap;
   }
 }

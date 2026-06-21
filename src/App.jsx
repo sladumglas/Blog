@@ -6,6 +6,9 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import SignUpPage from './pages/SignUpPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
+import NewArticlePage from './pages/NewArticlePage.jsx';
+import EditArticlePage from './pages/EditArticlePage.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +29,22 @@ export const router = createBrowserRouter([
         element: <ArticlePage />,
       },
       {
+        path: 'articles/:slug/edit',
+        element: (
+          <PrivateRoute>
+            <EditArticlePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'new-article',
+        element: (
+          <PrivateRoute>
+            <NewArticlePage />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: 'sign-in',
         element: <SignInPage />,
       },
@@ -35,7 +54,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'profile',
-        element: <ProfilePage />,
+        element: (
+          <PrivateRoute>
+            <ProfilePage />
+          </PrivateRoute>
+        ),
       },
       {
         path: '*',

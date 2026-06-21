@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { getArticle } from '../api/articlesApi.js';
+import { deleteArticle, getArticle } from '../api/articlesApi.js';
+import { useAuth } from '../context/useAuth.js';
+import ConfirmModal from '../components/ConfirmModal.jsx';
 
 export default function ArticlePage() {
   const { slug } = useParams();
 
   const [article, setArticle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState('');
+
+  const { user, token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadArticle() {
@@ -29,6 +36,23 @@ export default function ArticlePage() {
     loadArticle();
   }, [slug]);
 
+  async function handleDelete() {
+    try {
+      setIsDeleting(true);
+
+      await deleteArticle(slug, token);
+
+      navigate('/articles');
+    } catch {
+      setError('Не удалось удалить статью');
+    } finally {
+      setIsDeleting(false);
+      setIsModalOpen(false);
+    }
+  }
+
+  const isAuthor = user && article && user.username === article.author.username;
+
   return (
     <main className="container">
       <Link to="/articles" className="back-link">
@@ -41,9 +65,32 @@ export default function ArticlePage() {
 
       {!isLoading && !error && article && (
         <article className="full-article">
-          <h1>{article.title}</h1>
+          <div className="article-page-header">
+            <div>
+              <h1>{article.title}</h1>
 
-          <p className="author">Автор: {article.author.username}</p>
+              <p className="author">Автор: {article.author.username}</p>
+            </div>
+
+            {isAuthor && (
+              <div className="article-actions">
+                <Link
+                  to={`/articles/${article.slug}/edit`}
+                  className="edit-button"
+                >
+                  Edit
+                </Link>
+
+                <button
+                  type="button"
+                  className="delete-button"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
 
           <p className="description">{article.description}</p>
 
@@ -51,6 +98,14 @@ export default function ArticlePage() {
             <ReactMarkdown>{article.body}</ReactMarkdown>
           </div>
         </article>
+      )}
+
+      {isModalOpen && (
+        <ConfirmModal
+          onConfirm={handleDelete}
+          onCancel={() => setIsModalOpen(false)}
+          isDeleting={isDeleting}
+        />
       )}
     </main>
   );
