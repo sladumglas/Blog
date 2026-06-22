@@ -78,3 +78,37 @@ export async function deleteArticle(slug, token) {
     throw new Error('Не удалось удалить статью');
   }
 }
+
+export async function favoriteArticle(slug, token) {
+  const response = await fetch(`${API_URL}/articles/${slug}/favorite`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw data;
+  }
+
+  return data;
+}
+
+export async function unfavoriteArticle(slug, token) {
+  const response = await fetch(`${API_URL}/articles/${slug}/favorite`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw data;
+  }
+
+  return data;
+}

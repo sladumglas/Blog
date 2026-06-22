@@ -1,6 +1,36 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { favoriteArticle, unfavoriteArticle } from '../api/articlesApi.js';
+import { useAuth } from '../context/useAuth.js';
 
 export default function ArticleCard({ article }) {
+  const { user, token } = useAuth();
+
+  const [isFavorited, setIsFavorited] = useState(article.favorited);
+  const [favoritesCount, setFavoritesCount] = useState(article.favoritesCount);
+  const [isLikeLoading, setIsLikeLoading] = useState(false);
+
+  async function handleLikeClick() {
+    if (!user) {
+      return;
+    }
+
+    try {
+      setIsLikeLoading(true);
+
+      const data = isFavorited
+        ? await unfavoriteArticle(article.slug, token)
+        : await favoriteArticle(article.slug, token);
+
+      setIsFavorited(data.article.favorited);
+      setFavoritesCount(data.article.favoritesCount);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLikeLoading(false);
+    }
+  }
+
   return (
     <article className="article-card">
       <div className="article-top">
@@ -11,8 +41,13 @@ export default function ArticleCard({ article }) {
           </p>
         </div>
 
-        <button className="like-button" disabled>
-          ♥ {article.favoritesCount}
+        <button
+          className={isFavorited ? 'like-button active-like' : 'like-button'}
+          disabled={!user || isLikeLoading}
+          onClick={handleLikeClick}
+          type="button"
+        >
+          ♥ {favoritesCount}
         </button>
       </div>
 

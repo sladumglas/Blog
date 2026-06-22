@@ -12,12 +12,10 @@ export default function SignUpPage() {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     setError,
     formState: { errors, isSubmitting },
   } = useForm();
-
-  const password = watch('password');
 
   async function onSubmit(formData) {
     try {
@@ -119,7 +117,7 @@ export default function SignUpPage() {
             {...register('repeatPassword', {
               required: 'Повторите пароль',
               validate: (value) =>
-                value === password || 'Пароли должны совпадать',
+                value === getValues('password') || 'Пароли должны совпадать',
             })}
           />
         </label>

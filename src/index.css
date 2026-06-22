@@ -385,3 +385,17 @@ body {
     flex-wrap: wrap;
   }
 }
+
+.like-button:not(:disabled) {
+  cursor: pointer;
+}
+
+.like-button:not(:disabled):hover {
+  background: #198754;
+  color: white;
+}
+
+.like-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
