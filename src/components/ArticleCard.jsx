@@ -1,64 +1,34 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { favoriteArticle, unfavoriteArticle } from '../api/articlesApi.js';
-import { useAuth } from '../context/useAuth.js';
+import { Link } from 'react-router-dom';
+import FavoriteButton from './FavoriteButton.jsx';
+import { getValidTags } from '../utils/tags.js';
 
 export default function ArticleCard({ article }) {
-  const { user, token } = useAuth();
+  const [currentArticle, setCurrentArticle] = useState(article);
 
-  const [isFavorited, setIsFavorited] = useState(article.favorited);
-  const [favoritesCount, setFavoritesCount] = useState(article.favoritesCount);
-  const [isLikeLoading, setIsLikeLoading] = useState(false);
-
-  async function handleLikeClick() {
-    if (!user) {
-      return;
-    }
-
-    try {
-      setIsLikeLoading(true);
-
-      const data = isFavorited
-        ? await unfavoriteArticle(article.slug, token)
-        : await favoriteArticle(article.slug, token);
-
-      setIsFavorited(data.article.favorited);
-      setFavoritesCount(data.article.favoritesCount);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLikeLoading(false);
-    }
-  }
+  const validTags = getValidTags(currentArticle.tagList);
 
   return (
     <article className="article-card">
       <div className="article-top">
         <div>
-          <p className="author">{article.author.username}</p>
+          <p className="author">{currentArticle.author.username}</p>
           <p className="date">
-            {new Date(article.createdAt).toLocaleDateString()}
+            {new Date(currentArticle.createdAt).toLocaleDateString()}
           </p>
         </div>
 
-        <button
-          className={isFavorited ? 'like-button active-like' : 'like-button'}
-          disabled={!user || isLikeLoading}
-          onClick={handleLikeClick}
-          type="button"
-        >
-          ♥ {favoritesCount}
-        </button>
+        <FavoriteButton article={currentArticle} onChange={setCurrentArticle} />
       </div>
 
-      <Link to={`/articles/${article.slug}`} className="article-title">
-        {article.title}
+      <Link to={`/articles/${currentArticle.slug}`} className="article-title">
+        {currentArticle.title}
       </Link>
 
-      <p className="description">{article.description}</p>
+      <p className="description">{currentArticle.description}</p>
 
       <div className="tags">
-        {article.tagList.map((tag) => (
+        {validTags.map((tag) => (
           <span className="tag" key={tag}>
             {tag}
           </span>

@@ -24,6 +24,45 @@ body {
   text-decoration: none;
 }
 
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link,
+.user-link {
+  color: white;
+  text-decoration: none;
+}
+
+.register-link {
+  padding: 8px 14px;
+  border: 1px solid white;
+  border-radius: 6px;
+}
+
+.user-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.logout-button {
+  padding: 8px 14px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .container {
   width: 900px;
   max-width: calc(100% - 32px);
@@ -37,17 +76,33 @@ body {
   gap: 16px;
 }
 
-.article-card {
+.article-card,
+.full-article {
   background: white;
   border: 1px solid #ddd;
   border-radius: 8px;
+}
+
+.article-card {
   padding: 20px;
 }
 
-.article-top {
+.full-article {
+  padding: 24px;
+}
+
+.article-top,
+.article-page-header {
   display: flex;
   justify-content: space-between;
+}
+
+.article-top {
   align-items: center;
+}
+
+.article-page-header {
+  gap: 24px;
 }
 
 .author {
@@ -85,6 +140,21 @@ body {
   background: white;
   border: 1px solid #198754;
   border-radius: 4px;
+  cursor: not-allowed;
+}
+
+.like-button:not(:disabled) {
+  cursor: pointer;
+}
+
+.like-button:not(:disabled):hover,
+.active-like {
+  background: #198754;
+  color: white;
+}
+
+.like-button:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
@@ -137,13 +207,6 @@ body {
   text-decoration: none;
 }
 
-.full-article {
-  background: white;
-  padding: 24px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
 .markdown {
   margin-top: 24px;
   line-height: 1.6;
@@ -167,49 +230,14 @@ body {
   border-radius: 4px;
 }
 
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.nav-link,
-.user-link {
-  color: white;
-  text-decoration: none;
-}
-
-.register-link {
-  padding: 8px 14px;
-  border: 1px solid white;
-  border-radius: 6px;
-}
-
-.user-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.logout-button {
-  padding: 8px 14px;
-  border: 1px solid white;
-  background: transparent;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
 .auth-container {
   width: 420px;
   max-width: calc(100% - 32px);
   margin: 40px auto;
+}
+
+.article-form-container {
+  width: 700px;
 }
 
 .auth-form {
@@ -229,13 +257,19 @@ body {
   color: #333;
 }
 
-.auth-form input {
+.auth-form input,
+.auth-form textarea {
   width: 100%;
   margin-top: 6px;
   padding: 10px;
   box-sizing: border-box;
   border: 1px solid #bbb;
   border-radius: 4px;
+  font-family: Arial, sans-serif;
+}
+
+.auth-form textarea {
+  resize: vertical;
 }
 
 .checkbox-label {
@@ -271,7 +305,64 @@ body {
   cursor: not-allowed;
 }
 
+.article-actions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
 
+.edit-button,
+.delete-button,
+.cancel-button {
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.edit-button {
+  color: #198754;
+  background: white;
+  border: 1px solid #198754;
+}
+
+.delete-button {
+  color: #b00020;
+  background: white;
+  border: 1px solid #b00020;
+}
+
+.cancel-button {
+  color: #333;
+  background: white;
+  border: 1px solid #bbb;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-modal {
+  width: 320px;
+  padding: 24px;
+  background: white;
+  border-radius: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
 
 @media (max-width: 600px) {
   .header {
@@ -297,86 +388,7 @@ body {
   .article-title {
     font-size: 20px;
   }
-}
 
-.auth-form textarea {
-  width: 100%;
-  margin-top: 6px;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  font-family: Arial, sans-serif;
-  resize: vertical;
-}
-
-.article-form-container {
-  width: 700px;
-}
-
-.article-page-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.article-actions {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-}
-
-.edit-button,
-.delete-button,
-.cancel-button {
-  padding: 8px 14px;
-  border-radius: 4px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.edit-button {
-  color: #198754;
-  background: white;
-  border: 1px solid #198754;
-}
-
-.delete-button {
-  color: #b00020;
-  background: white;
-  border: 1px solid #b00020;
-}
-
-.cancel-button {
-  color: #333;
-  background: white;
-  border: 1px solid #bbb;
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.confirm-modal {
-  width: 320px;
-  padding: 24px;
-  background: white;
-  border-radius: 8px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-@media (max-width: 600px) {
   .article-page-header {
     flex-direction: column;
   }
@@ -386,16 +398,21 @@ body {
   }
 }
 
-.like-button:not(:disabled) {
+.filter-panel {
+  margin-bottom: 24px;
+}
+
+.filter-button {
+  padding: 8px 14px;
+  color: #198754;
+  background: white;
+  border: 1px solid #198754;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.like-button:not(:disabled):hover {
+.filter-button:hover,
+.active-filter {
   background: #198754;
   color: white;
-}
-
-.like-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }

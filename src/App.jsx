@@ -9,6 +9,7 @@ import ProfilePage from './pages/ProfilePage.jsx';
 import NewArticlePage from './pages/NewArticlePage.jsx';
 import EditArticlePage from './pages/EditArticlePage.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import PublicRoute from './components/PublicRoute.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -45,19 +46,27 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'sign-in',
-        element: <SignInPage />,
-      },
-      {
-        path: 'sign-up',
-        element: <SignUpPage />,
-      },
-      {
         path: 'profile',
         element: (
           <PrivateRoute>
             <ProfilePage />
           </PrivateRoute>
+        ),
+      },
+      {
+        path: 'sign-in',
+        element: (
+          <PublicRoute>
+            <SignInPage />
+          </PublicRoute>
+        ),
+      },
+      {
+        path: 'sign-up',
+        element: (
+          <PublicRoute>
+            <SignUpPage />
+          </PublicRoute>
         ),
       },
       {

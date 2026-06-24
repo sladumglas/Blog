@@ -1,48 +1,41 @@
-import { createContext, useEffect, useState } from 'react';
-import { getCurrentUser } from '../api/authApi.js';
+import { createContext, useState } from 'react';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
+function getSavedUser() {
+  const savedUser = localStorage.getItem('user');
+
+  if (!savedUser) {
+    return null;
+  }
+
+  return JSON.parse(savedUser);
+}
+
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUserState] = useState(getSavedUser);
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadUser() {
-      if (!token) {
-        return;
-      }
-
-      try {
-        setIsAuthLoading(true);
-
-        const data = await getCurrentUser(token);
-
-        setUser(data.user);
-      } catch {
-        localStorage.removeItem('token');
-        setToken(null);
-        setUser(null);
-      } finally {
-        setIsAuthLoading(false);
-      }
-    }
-
-    loadUser();
-  }, [token]);
+  function saveUser(userData) {
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUserState(userData);
+  }
 
   function login(userData) {
     localStorage.setItem('token', userData.token);
+    localStorage.setItem('user', JSON.stringify(userData));
+
     setToken(userData.token);
-    setUser(userData);
+    setUserState(userData);
   }
 
   function logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
     setToken(null);
-    setUser(null);
+    setUserState(null);
   }
 
   return (
@@ -50,10 +43,9 @@ export function AuthProvider({ children }) {
       value={{
         user,
         token,
-        isAuthLoading,
         login,
         logout,
-        setUser,
+        setUser: saveUser,
       }}
     >
       {children}

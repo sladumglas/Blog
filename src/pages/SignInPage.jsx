@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/authApi.js';
 import { useAuth } from '../context/useAuth.js';
 
@@ -8,6 +8,9 @@ export default function SignInPage() {
   const [serverError, setServerError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/articles';
 
   const {
     register,
@@ -26,7 +29,7 @@ export default function SignInPage() {
       });
 
       login(data.user);
-      navigate('/articles');
+      navigate(from, { replace: true });
     } catch (error) {
       if (error.errors) {
         if (error.errors.email) {

@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import {
-  deleteArticle,
-  favoriteArticle,
-  getArticle,
-  unfavoriteArticle,
-} from '../api/articlesApi.js';
+import { deleteArticle, getArticle } from '../api/articlesApi.js';
 import { useAuth } from '../context/useAuth.js';
 import ConfirmModal from '../components/ConfirmModal.jsx';
+import FavoriteButton from '../components/FavoriteButton.jsx';
+import { getValidTags } from '../utils/tags.js';
 
 export default function ArticlePage() {
   const { slug } = useParams();
@@ -16,7 +13,6 @@ export default function ArticlePage() {
   const [article, setArticle] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isLikeLoading, setIsLikeLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState('');
 
@@ -42,26 +38,6 @@ export default function ArticlePage() {
     loadArticle();
   }, [slug]);
 
-  async function handleLikeClick() {
-    if (!user || !article) {
-      return;
-    }
-
-    try {
-      setIsLikeLoading(true);
-
-      const data = article.favorited
-        ? await unfavoriteArticle(article.slug, token)
-        : await favoriteArticle(article.slug, token);
-
-      setArticle(data.article);
-    } catch {
-      setError('Не удалось обновить лайк');
-    } finally {
-      setIsLikeLoading(false);
-    }
-  }
-
   async function handleDelete() {
     try {
       setIsDeleting(true);
@@ -78,6 +54,7 @@ export default function ArticlePage() {
   }
 
   const isAuthor = user && article && user.username === article.author.username;
+  const validTags = article ? getValidTags(article.tagList) : [];
 
   return (
     <main className="container">
@@ -97,16 +74,7 @@ export default function ArticlePage() {
 
               <p className="author">Автор: {article.author.username}</p>
 
-              <button
-                type="button"
-                className={
-                  article.favorited ? 'like-button active-like' : 'like-button'
-                }
-                disabled={!user || isLikeLoading}
-                onClick={handleLikeClick}
-              >
-                ♥ {article.favoritesCount}
-              </button>
+              <FavoriteButton article={article} onChange={setArticle} />
             </div>
 
             {isAuthor && (
@@ -130,6 +98,16 @@ export default function ArticlePage() {
           </div>
 
           <p className="description">{article.description}</p>
+
+          {validTags.length > 0 && (
+            <div className="tags">
+              {validTags.map((tag) => (
+                <span className="tag" key={tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="markdown">
             <ReactMarkdown>{article.body}</ReactMarkdown>
